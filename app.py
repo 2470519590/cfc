@@ -47,6 +47,16 @@ def prepare_input_data(data):
         *one_hot_encode(data['socialActivity'], ['often', 'never', 'sometimes']),
         *one_hot_encode(data['airTravelFrequency'], ['frequently', 'rarely', 'never', 'very frequently']),
         *one_hot_encode(data['wasteBagSize'], ['large', 'extra large', 'small', 'medium']),
+
+        data['recyclingGlass'],
+        data['recyclingMetal'],
+        data['recyclingPaper'],
+        data['recyclingPlastic'],
+        data['cookingWithAirfryer'],
+        data['cookingWithGrill'],
+        data['cookingWithMicrowave'],
+        data['cookingWithOven'],
+        data['cookingWithStove']
     ]
     return input_data
 
