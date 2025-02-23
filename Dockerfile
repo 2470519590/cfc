@@ -1,7 +1,7 @@
 FROM python:3.8
 
 # 设置工作目录
-WORKDIR /
+WORKDIR /app
 
 # 复制当前目录内容到容器的 /app 目录
 COPY . /app
@@ -11,7 +11,7 @@ COPY . /app
 COPY requirement.txt /app/requirement.txt
 
 # 安装依赖
-RUN pip install --no-cache-dir -r /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirement.txt
 
 # 设置容器启动时的默认命令
 CMD ["python", "app.py"]
