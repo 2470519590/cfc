@@ -1,0 +1,16 @@
+{
+  "name": "My Carbon Footprint Calculator",
+  "short_name": "Carbon Calculator",
+  "description": "Calculate your carbon footprint",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "images/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>碳足迹计算器</title>
+    <!-- 引入Bootstrap的CSS文件 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+        h1, h5 {
+            color: #2c3e50;
+        }
+        .form-label {
+            color: #34495e;
+            font-weight: bold;
+        }
+        .form-select, .form-control {
+            border-radius: 10px;
+            border: 1px solid #bdc3c7;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-body {
+            padding: 1.5rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            border: none;
+            border-radius: 25px;
+            padding: 0.75rem 2rem;
+            font-size: 1.1rem;
+            transition: background 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+        }
+        .alert {
+            border-radius: 10px;
+        }
+        .form-check-label {
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">个人碳排放计算器</h1>
+        <h5 class="text-center mb-4">使用Kaggle碳排放数据集与人工神经网络进行碳排放预测</h5>
+        <form id="carbonForm" class="row g-3">
+            <!-- 体型 -->
+            <div class="col-md-6">
+                <label for="bodyType" class="form-label">体型：</label>
+                <select id="bodyType" name="bodyType" class="form-select" required>
+                    <option value="underweight">偏瘦</option>
+                    <option value="normal">正常</option>
+                    <option value="overweight">偏胖</option>
+                    <option value="obese">肥胖</option>
+                </select>
+            </div>
+
+            <!-- 性别 -->
+            <div class="col-md-6">
+                <label for="sex" class="form-label">性别：</label>
+                <select id="sex" name="sex" class="form-select" required>
+                    <option value="male">男</option>
+                    <option value="female">女</option>
+                </select>
+            </div>
+
+            <!-- 饮食情况 -->
+            <div class="col-md-6">
+                <label for="diet" class="form-label">饮食情况：</label>
+                <select id="diet" name="diet" class="form-select" required>
+                    <option value="omnivore">正常食用动物的食品或产品</option>
+                    <option value="pescatarian">以鱼肉作为主要蛋白质来源</option>
+                    <option value="vegetarian">不食用肉类</option>
+                    <option value="vegan">不食用任何来自动物的食品或产品</option>
+                </select>
+            </div>
+
+            <!-- 洗澡频率 -->
+            <div class="col-md-6">
+                <label for="howOftenShower" class="form-label">洗澡频率：</label>
+                <select id="howOftenShower" name="howOftenShower" class="form-select" required>
+                    <option value="less frequently">少于每天一次</option>
+                    <option value="daily">每天一次</option>
+                    <option value="more frequently">介于每天一次与每天两次之间</option>
+                    <option value="twice a day">每天两次</option>
+                </select>
+            </div>
+
+            <!-- 取暖能源 -->
+            <div class="col-md-6">
+                <label for="heatingEnergySource" class="form-label">取暖能源：</label>
+                <select id="heatingEnergySource" name="heatingEnergySource" class="form-select" required>
+                    <option value="coal">烧炭</option>
+                    <option value="natural gas">天然气</option>
+                    <option value="wood">烧木头</option>
+                    <option value="electricity">电热</option>
+                </select>
+            </div>
+
+            <!-- 主要出行方式 -->
+            <div class="col-md-6">
+                <label for="transport" class="form-label">主要出行方式：</label>
+                <select id="transport" name="transport" class="form-select" required>
+                    <option value="public">公共交通</option>
+                    <option value="walk/bicycle">步行或自行车</option>
+                    <option value="private (petrol)">汽油车</option>
+                    <option value="private (diesel)">柴油车</option>
+                    <option value="private (hybrid)">氢能车</option>
+                    <option value="private (lpg)">混合动力车</option>
+                    <option value="private (electric)">电能车</option>
+                </select>
+            </div>
+
+            <!-- 社交活动频率 -->
+            <div class="col-md-6">
+                <label for="socialActivity" class="form-label">社交活动频率：</label>
+                <select id="socialActivity" name="socialActivity" class="form-select" required>
+                    <option value="never">从来没有</option>
+                    <option value="sometimes">有时</option>
+                    <option value="often">经常</option>
+                </select>
+            </div>
+			
+			<!-- 每个月买多少件新衣服 -->
+            <div class="col-md-6">
+                <label for="howManyNewClothesMonthly" class="form-label">每个月买多少件新衣服：</label>
+                <input type="number" id="howManyNewClothesMonthly" name="howManyNewClothesMonthly" class="form-control" required>
+            </div>
+
+            <!-- 每月的食品消费 -->
+            <div class="col-md-6">
+                <label for="monthlyGroceryBill" class="form-label">每月的食品消费：</label>
+                <input type="number" id="monthlyGroceryBill" name="monthlyGroceryBill" class="form-control" required>
+            </div>
+
+            <!-- 货币选择 -->
+            <div class="col-md-6">
+                <label for="currencyType" class="form-label">请选择食品消费货币单位：</label>
+                <select id="currencyType" name="currencyType" class="form-select" required>
+                    <option value="USD">美元 (USD)</option>
+                    <option value="RMB">人民币 (RMB)</option>
+                </select>
+            </div>
+
+            <!-- 坐飞机的频率 -->
+            <div class="col-md-6">
+                <label for="frequencyOfTravelingByAir" class="form-label">坐飞机的频率：</label>
+                <select id="frequencyOfTravelingByAir" name="frequencyOfTravelingByAir" class="form-select" required>
+                    <option value="never">从来没有</option>
+                    <option value="rarely">偶尔</option>
+                    <option value="frequently">经常</option>
+                    <option value="very frequently">频繁</option>
+                </select>
+            </div>
+
+            <!-- 车辆每月行驶距离 -->
+            <div class="col-md-6">
+                <label for="vehicleMonthlyDistance" class="form-label">车辆每月行驶距离（Km）：</label>
+                <input type="number" id="vehicleMonthlyDistance" name="vehicleMonthlyDistance" class="form-control" required>
+            </div>
+
+            <!-- 垃圾袋大小 -->
+            <div class="col-md-6">
+                <label for="wasteBag" class="form-label">垃圾袋大小：</label>
+                <select id="wasteBag" name="wasteBag" class="form-select" required>
+                    <option value="small">小</option>
+                    <option value="medium">中</option>
+                    <option value="large">大</option>
+                    <option value="extra large">特大</option>
+                </select>
+            </div>
+
+            <!-- 每周使用的垃圾袋数量 -->
+            <div class="col-md-6">
+                <label for="wasteBagWeeklyCount" class="form-label">每周使用的垃圾袋数量：</label>
+                <input type="number" id="wasteBagWeeklyCount" name="wasteBagWeeklyCount" class="form-control" required>
+            </div>
+
+            <!-- 每天在电视或电脑上花费的时间 -->
+            <div class="col-md-6">
+                <label for="howLongTVPCDailyHour" class="form-label">每天在电视或电脑上花费的时间（hours）：</label>
+                <input type="number" id="howLongTVPCDailyHour" name="howLongTVPCDailyHour" class="form-control" required>
+            </div>
+
+            <!-- 每天在网络上花费的时间 -->
+            <div class="col-md-6">
+                <label for="howLongInternetDailyHour" class="form-label">每天在网络上花费的时间（hours）：</label>
+                <input type="number" id="howLongInternetDailyHour" name="howLongInternetDailyHour" class="form-control" required>
+            </div>
+
+            <!-- 是否会考虑购买节能设备 -->
+            <div class="col-md-6">
+                <label for="energyEfficiency" class="form-label">您是否会考虑购买节能设备：</label>
+                <select id="energyEfficiency" name="energyEfficiency" class="form-select" required>
+                    <option value="No">不</option>
+                    <option value="Sometimes">大概会</option>
+                    <option value="Yes">是的</option>
+                </select>
+            </div>
+
+            <!-- 回收物品和烹饪方式 -->
+            <div class="col-12">
+                <div class="row">
+                    <!-- 回收物品 -->
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">回收物品（选择你回收的物品）：</h5>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="recyclingGlass" name="recyclingGlass">
+                                    <label class="form-check-label" for="recyclingGlass">玻璃</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="recyclingMetal" name="recyclingMetal">
+                                    <label class="form-check-label" for="recyclingMetal">金属</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="recyclingPaper" name="recyclingPaper">
+                                    <label class="form-check-label" for="recyclingPaper">纸张</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="recyclingPlastic" name="recyclingPlastic">
+                                    <label class="form-check-label" for="recyclingPlastic">塑料</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 烹饪方式 -->
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">烹饪方式（选择常用的烹饪方式）：</h5>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="cookingWithAirfryer" name="cookingWithAirfryer">
+                                    <label class="form-check-label" for="cookingWithAirfryer">空气炸锅</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="cookingWithGrill" name="cookingWithGrill">
+                                    <label class="form-check-label" for="cookingWithGrill">烧烤</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="cookingWithMicrowave" name="cookingWithMicrowave">
+                                    <label class="form-check-label" for="cookingWithMicrowave">微波炉</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="cookingWithOven" name="cookingWithOven">
+                                    <label class="form-check-label" for="cookingWithOven">烤箱</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="cookingWithStove" name="cookingWithStove">
+                                    <label class="form-check-label" for="cookingWithStove">炉灶</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+
+            <!-- 提交按钮 -->
+            <div class="col-12" align="center">
+                <button type="submit" class="btn btn-primary btn-lg">计算个人碳排放</button>
+            </div>
+        </form>
+
+        <!-- 结果展示 -->
+        <h2 class="mt-4">计算结果：</h2>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // 处理表单提交
+        document.getElementById('carbonForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // 阻止默认表单提交
+			
+			const currencyType = document.getElementById('currencyType').value;
+            let monthlyGroceryBill = parseFloat(document.getElementById('monthlyGroceryBill').value);
+
+            // 如果用户选择人民币，进行汇率转换 (假设 1 USD = 7 RMB)
+            if (currencyType === 'RMB') {
+                monthlyGroceryBill = monthlyGroceryBill / 7.25;  // 转换为美元
+            }
+
+
+            // 收集表单数据
+            const data = {
+                bodyType: document.getElementById('bodyType').value,
+                sex: document.getElementById('sex').value,
+                diet: document.getElementById('diet').value,
+                howOftenShower: document.getElementById('howOftenShower').value,
+                heatingEnergySource: document.getElementById('heatingEnergySource').value,
+                transport: document.getElementById('transport').value,
+                socialActivity: document.getElementById('socialActivity').value,
+                monthlyGroceryBill: monthlyGroceryBill,
+                frequencyOfTravelingByAir: document.getElementById('frequencyOfTravelingByAir').value,
+                vehicleMonthlyDistance: document.getElementById('vehicleMonthlyDistance').value,
+                wasteBag: document.getElementById('wasteBag').value,
+                wasteBagWeeklyCount: document.getElementById('wasteBagWeeklyCount').value,
+                howLongTVPCDailyHour: document.getElementById('howLongTVPCDailyHour').value,
+                howManyNewClothesMonthly: document.getElementById('howManyNewClothesMonthly').value,
+                howLongInternetDailyHour: document.getElementById('howLongInternetDailyHour').value,
+                energyEfficiency: document.getElementById('energyEfficiency').value,
+                recyclingGlass: document.getElementById('recyclingGlass').checked ? 1 : 0,
+                recyclingMetal: document.getElementById('recyclingMetal').checked ? 1 : 0,
+                recyclingPaper: document.getElementById('recyclingPaper').checked ? 1 : 0,
+                recyclingPlastic: document.getElementById('recyclingPlastic').checked ? 1 : 0,
+                cookingWithAirfryer: document.getElementById('cookingWithAirfryer').checked ? 1 : 0,
+                cookingWithGrill: document.getElementById('cookingWithGrill').checked ? 1 : 0,
+                cookingWithMicrowave: document.getElementById('cookingWithMicrowave').checked ? 1 : 0,
+                cookingWithOven: document.getElementById('cookingWithOven').checked ? 1 : 0,
+                cookingWithStove: document.getElementById('cookingWithStove').checked ? 1 : 0
+            };
+
+            // 发送请求
+            fetch('http://127.0.0.1:5000/calculate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // 显示结果
+                const resultElement = document.getElementById('result');
+                resultElement.innerHTML = `
+                    <div class="alert alert-success mt-3">
+                        你每个月的碳排放量是: <strong>${data.total_emission} kg</strong>
+                    </div>
+                `;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const resultElement = document.getElementById('result');
+                resultElement.innerHTML = `
+                    <div class="alert alert-danger mt-3">
+                        An error occurred. Please try again later.
+                    </div>
+                `;
+            });
+        });
+    </script>
+</body>
+</html>

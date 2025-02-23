@@ -1,0 +1,51 @@
+Features:
+
+'Body Type': Body type.
+'Sex': Gender.
+' Diet': Diet.
+'How Often Shower': Frequency of showering
+'Heating Energy Source': Residential heating energy
+'Transport': Transportation preference.
+'Vehicle Type': Vehicle fuel type.
+'Social Activity': Frequency of participating in social activities.
+'Monthly Grocery Bill': Monthly amount spent on groceries, in dollars.
+'Frequency of Traveling by Air': Frequency of using aircraft in the last month.
+'Vehicle Monthly Distance Km': The kilometers traveled by vehicle in the last month.
+'Waste Bag Size': Size of the garbage bag
+'Waste Bag Weekly Count': The amount of garbage thrown away in the last week.
+'How Long TV PC Daily Hour': Daily time spent in front of TV or PC.
+'How Many New Clothes Monthly': Number of clothes purchased monthly.
+'How Long Internet Daily Hour': Time spent on the Internet daily.
+'Energy efficiency': Whether or not you care about purchasing energy efficient devices.
+'Recycling': The wastes it recycles.
+'Cooking_With': Devices used in cooking
+'CarbonEmission': Dependent variable, total carbon emissions.
+
+
+
+Body Type : ['overweight' 'obese' 'underweight' 'normal']
+Sex : ['female' 'male']
+Diet : ['pescatarian' 'vegetarian' 'omnivore' 'vegan']
+How Often Shower : ['daily' 'less frequently' 'more frequently' 'twice a day']
+Heating Energy Source : ['coal' 'natural gas' 'wood' 'electricity']
+Transport : ['public' 'walk/bicycle' 'private (petrol)' 'private (diesel)'
+ 'private (hybrid)' 'private (lpg)' 'private (electric)']
+Social Activity : ['often' 'never' 'sometimes']
+Monthly Grocery Bill :
+Frequency of Traveling by Air : ['frequently' 'rarely' 'never' 'very frequently']
+Vehicle Monthly Distance Km :
+Waste Bag Si+S1+L1:T2 : ['large' 'extra large' 'small' 'medium']
+Waste Bag Weekly Count :
+How Long TV PC Daily Hour :
+How Many New Clothes Monthly :
+How Long Internet Daily Hour :
+Energy efficiency : ['No' 'Sometimes' 'Yes']
+Recycling_Glass : [0 1]
+Recycling_Metal : [1 0]
+Recycling_Paper : [0 1]
+Recycling_Plastic : [0 1]
+Cooking_With_Airfryer : [0 1]
+Cooking_With_Grill : [0 1]
+Cooking_With_Microwave : [0 1]
+Cooking_With_Oven : [1 0]
+Cooking_With_Stove : [1 0]
