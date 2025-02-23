@@ -34,9 +34,11 @@ def prepare_input_data(data):
     # 将前端数据转换为模型输入格式
     input_data = [
         data['vehicleMonthlyDistance'],
+        data['howManyNewClothesMonthly'],
         data['wasteBagWeeklyCount'],
         data['howLongTVPCDailyHour'],
         data['howLongInternetDailyHour'],
+        data['monthlyGroceryBill'],
         # 分类特征的独热编码
         *one_hot_encode(data['bodyType'], ['overweight', 'obese', 'underweight', 'normal']),
         *one_hot_encode(data['sex'], ['female', 'male']),
