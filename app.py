@@ -51,6 +51,34 @@ def calculate():
         'Cooking_With_Stove': 1 if data.get('cookingWithStove') else 0
     }
 
+    user_data={
+        'Body Type': 'normal',
+        'Sex': 'male',
+        'Diet': 'omnivore',
+        'How Often Shower': 'less frequently',
+        'Heating Energy Source': 'electricity',
+        'Transport': 'public',
+        'Monthly Grocery Bill': 190.0,
+        'Frequency of Traveling by Air': 'never',
+        'Vehicle Monthly Distance Km': 15.0,
+        'Social Activity': data.get('socialActivity', 'sometimes'),
+        'Waste Bag Si+S1+L1:T2': 'medium',
+        'Waste Bag Weekly Count': 3,
+        'How Long TV PC Daily Hour': 8.0,
+        'How Many New Clothes Monthly': 0,
+        'How Long Internet Daily Hour': 12.0,
+        'Energy efficiency': 'No',
+        'Recycling_Glass': 0,
+        'Recycling_Metal': 0,
+        'Recycling_Paper': 1,
+        'Recycling_Plastic': 0,
+        'Cooking_With_Airfryer': 0,
+        'Cooking_With_Grill': 0,
+        'Cooking_With_Microwave': 0,
+        'Cooking_With_Oven': 0,
+        'Cooking_With_Stove': 0
+    }
+
     # 调用计算函数，并将数据传入模型进行预测
     result = it.calculate(user_data)
 
