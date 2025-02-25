@@ -52,6 +52,7 @@ def calculate():
     }
 
     # 调用计算函数，并将数据传入模型进行预测
+    result = it.calculate(user_data)
     print(user_data)
 
     # 返回计算结果
